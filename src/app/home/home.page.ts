@@ -12,7 +12,7 @@ export class HomePage {
   errMsg: string;
   constructor(private bt: BluetoothService) {
    
-
+    bt.findDevices();
   }                           
 
 }

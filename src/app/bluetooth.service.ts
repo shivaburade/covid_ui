@@ -135,7 +135,7 @@ export class BluetoothService {
     }).catch((status) => {
       this.errMsg = "Enable Bluetooth to continue";
       this.ble.enable();
-      this.findDevices();
+      //this.findDevices();
     })
   }
 

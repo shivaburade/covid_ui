@@ -11,10 +11,10 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
-  {
+  /*{
     path: 'places',
     loadChildren: () => import('./places/places.module').then( m => m.PlacesPageModule)
-  },
+  },*/
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
