@@ -11,10 +11,13 @@ export class BluetoothService {
   devices = [];
   errMsg : string;
   constructor(private ble: BLE, private localNotifications: LocalNotifications, private sqlite:SQLite) { 
+    
+  }
+
+  initialize(){
     this.findDevices();
     this.db_create();
   }
-
 
   db_create(){
     this.sqlite.create({

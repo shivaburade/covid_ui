@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Papa } from 'ngx-papaparse';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+
 // import { parse } from 'path';
 declare var google;
 @Component({
@@ -16,7 +18,7 @@ export class PlacesPage implements OnInit, AfterContentInit {
   headerRow: any[] = [];
   i: number = 0;
   @ViewChild('mapElement', { static: true }) mapElement; 
-  constructor(private http: HttpClient, private papa: Papa) {
+  constructor(private http: HttpClient, private papa: Papa,private geolocation: Geolocation) {
     this.loadCSV();
    }
    private loadCSV(){
@@ -37,18 +39,25 @@ export class PlacesPage implements OnInit, AfterContentInit {
           console.log(this.csvdata[0][2]);
         }
      })
-     this.map = new google.maps.Map(
-      this.mapElement.nativeElement,{
-          center: {
-           
-            lat:18.530646,
-            lng:73.844784 
-          },
-          zoom: 16
-          
+     this.geolocation.getCurrentPosition().then((position)=>{
+
+      let latLng = new google.maps.LatLng(position.coords.latitude,
+                                          position.coords.longitude);
+    
+      let mapOptions = {
+        center: latLng,
+        zoom: 17,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+    
+      this.map = new google.maps.Map(this.mapElement.nativeElement, 
+      mapOptions);
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: this.map.getCenter()
       });
-      
-         for( this.i = 0; this.i < 374; this.i++) {
+      for( this.i = 0; this.i < 374; this.i++) {
         const cityCircle = new google.maps.Circle({
         strokeColor: "#FF0000",
         strokeOpacity: 0.8,
@@ -65,7 +74,10 @@ export class PlacesPage implements OnInit, AfterContentInit {
       
        });
       }
-
+    
+      }, (err) => {
+      console.log(err);
+      });
     }
 
   ngOnInit(): void{

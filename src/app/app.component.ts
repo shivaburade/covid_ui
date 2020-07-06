@@ -18,15 +18,18 @@ export class AppComponent {
     private bt: BluetoothService
   ) {
     this.initializeApp();
-    setTimeout(() => {
-      this.bt.contact_tracting_notification();
-    }, 10000);
+    
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.bt.initialize();
+      setTimeout(() => {
+        this.bt.contact_tracting_notification();
+      }, 10000);
+
     });
   }
 }
